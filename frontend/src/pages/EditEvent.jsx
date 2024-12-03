@@ -1,21 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import { JsonForms } from "@jsonforms/react";
 import { materialRenderers } from "@jsonforms/material-renderers";
 import { schema, uischema } from "../schema/eventSchema";
 import { Button, Box } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import { AppContext } from '../context/AppContext';
+import axios from 'axios';
 
 export default function EditEvent() {
+  const appContext = useContext(AppContext);
+  const token = appContext.state.token;
   const { eventId } = useParams();
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEventDetails = async () => { // not working this is AI generated
+    const fetchEventDetails = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:3001/api/events/${eventId}`);
-        const result = await response.json();
-        setFormData(result);
+        const response = await axios.post('http://127.0.0.1:3001/api/search/Event/', { eventId },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token,
+            },
+          }
+        );
+        setFormData(response);
       } catch (error) {
         console.error("Error fetching event details:", error);
       }
@@ -25,13 +35,15 @@ export default function EditEvent() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:3001/api/events/${eventId}`, { // not working
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const result = await response.json();
-      if (result.success) {
+      const response = await axios.post(`http://127.0.0.1:3001/api/crud/update/Event/${eventId}/`, { formData },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        }
+      );
+      if (response.success) {
         alert("Event updated successfully!");
         navigate("/userDashBoard");
       } else {
