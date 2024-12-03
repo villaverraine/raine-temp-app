@@ -68,7 +68,26 @@ export default function EditEvent() {
   };
 
   return (
-    <Box p={3}>
+    <Box
+    style={{
+      padding: '20px',
+      maxWidth: '600px',
+      margin: 'auto',
+      borderRadius: '10px',
+      fontFamily: 'Roboto, sans-serif' 
+    }}
+  >
+    <h2
+      style={{ textAlign: 'left', marginBottom: '0'}}>
+      Event Info
+    </h2>
+    <p 
+      style={{ textAlign: 'justify', margin: '0, 0, 16px, 0'}}>
+    Update your even't details to make sure attendees know where exactly to go and when. 
+    You can costumize and edit all this information at any time.
+    </p>
+
+    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto", lineHeight: "1.5" }}>
       <JsonForms
         schema={schema}
         uischema={uischema}
@@ -76,23 +95,49 @@ export default function EditEvent() {
         renderers={materialRenderers}
         onChange={({ data }) => setFormData(data)}
       />
-      <Box mt={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSave}
-          style={{ marginRight: "10px" }}
-        >
-          Save Changes
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/userDashBoard")}
-        >
-          Cancel
-        </Button>
-      </Box>
+    </div>
+
+    <Box
+      mt={2}
+      style={{
+        display: 'flex',
+        justifyContent: 'center', 
+        gap: '20px', 
+        marginTop: '20px',
+      }}
+    >
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => navigate('/userDashBoard')}
+        style={{
+          padding: '10px 20px',
+          border: '1px solid #6c757d',
+          backgroundColor: 'gray',
+          color: '#fff',
+          cursor: 'pointer',
+          textTransform: 'none',
+          borderRadius: '5px',
+        }}
+      >
+        Cancel
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSave}
+        style={{
+          padding: '10px 20px',
+          backgroundColor: 'black',
+          color: '#fff',
+          cursor: 'pointer',
+          textTransform: 'none',
+          borderRadius: '5px',
+        }}
+      >
+        Save Changes
+      </Button>
     </Box>
+  </Box>
   );
 }
