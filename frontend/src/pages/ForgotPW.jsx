@@ -33,7 +33,7 @@ export default function App() {
       return;
     }
 
-    axios.post('http://127.0.0.1:3001/api/check-email', { email: identifier })
+    axios.post('http://127.0.0.1:3001/api/check-email', { email: identifier }) // not working
       .then(res => {
         setSuccess(true);
         setError(null);

@@ -3,6 +3,7 @@ import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function TopBar() {
     const navigate = useNavigate();
