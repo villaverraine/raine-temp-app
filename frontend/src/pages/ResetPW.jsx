@@ -32,7 +32,7 @@ export default function App() {
       return;
     }
 
-    axios.post('http://127.0.0.1:3001/api/reset-password', { password })
+    axios.post('http://127.0.0.1:3001/api/reset-password', { password }) // not working
       .then(res => {
         setSuccess(true);
         setError(null);
