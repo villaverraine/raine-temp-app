@@ -1,19 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import EventTable from '../tables/eventTable';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import EventTable from '../tables/eventTable';
 import { AppContext } from '../context/AppContext';
+import axios from 'axios';
 
 export default function UserDashBoard() {
     const appContext = useContext(AppContext);
     const [events, setEvents] = useState([]);
-    const userId = appContext.state.profile._id;
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const userId = appContext?.state?.profile?._id;
+    const token = appContext?.state?.token;
 
     useEffect(() => {
-        if (userId) {
+        if (userId && token) {
             const fetchEvents = async () => {
                 try {
                     const response = await axios.post(
@@ -22,28 +25,32 @@ export default function UserDashBoard() {
                         {
                             headers: {
                                 'Content-Type': 'application/json',
-                                Authorization: appContext.state.token,
+                                Authorization: token,
                             },
                         }
                     );
-                    setEvents(response.data.result);
+                    setEvents(response.data.result || []);
                 } catch (error) {
                     console.error("Error fetching events:", error);
-                    setEvents([]);
+                    setError("Failed to fetch events. Please try again later.");
                 }
             };
             fetchEvents();
         }
-    }, [userId]);
+    }, [userId, token]);
 
     const handleCreate = () => {
-        console.log("Create Submitted");
+        navigate('/create-event');
     };
 
     return (
         <>
-            <Typography style={{ fontSize: '25px', paddingTop: '10px' }}>Your Events</Typography>
-            {events.length > 0 ? (
+            <Typography variant="h5" style={{ paddingTop: '10px' }}>
+                Your Events
+            </Typography>
+            {error ? (
+                <Typography color="error">{error}</Typography>
+            ) : events.length > 0 ? (
                 <EventTable eventData={events} />
             ) : (
                 <Typography>No events available for your account.</Typography>
@@ -51,6 +58,7 @@ export default function UserDashBoard() {
             <Fab
                 onClick={handleCreate}
                 style={{ position: 'fixed', bottom: '16px', right: '16px' }}
+                color="primary"
             >
                 <AddIcon />
             </Fab>

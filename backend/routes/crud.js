@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import authenticateToken from '../middleware/authenticateToken.js';
 import User from '../models/Users.js';
 import Events from '../models/Events.js';
+import Guest from '../models/Guests.js';
 
 const router = express.Router();
 

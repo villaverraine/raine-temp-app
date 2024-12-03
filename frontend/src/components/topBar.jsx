@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 function TopBar() {
     const navigate = useNavigate();
 
-    const handleNavigate = () => {
-        navigate('/profile');
+    const handleProfileClick = () => {
+        navigate('/profile')
     }
     return (
         <AppBar
@@ -30,7 +30,7 @@ function TopBar() {
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     Acacia Waldorf School
                 </Typography>
-                <IconButton onClick={handleNavigate}>
+                <IconButton onClick={handleProfileClick}>
                     <AccountCircleIcon />
                 </IconButton>
             </Toolbar>
