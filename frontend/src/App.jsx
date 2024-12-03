@@ -6,7 +6,6 @@ import UserDashBoard from './pages/UserDashboard.jsx';
 import ReportsForm from './pages/reports.jsx';
 import Attendance from './pages/Attendance.jsx';
 import ProfilePage from './pages/Profile.jsx';
-import EventForm from './pages/Events-add-edit.jsx';
 
 import TopBar from './components/topBar.jsx';
 
@@ -58,14 +57,6 @@ export default function App() {
           element={
             <ProtectedRoute>
               <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/event"
-          element={
-            <ProtectedRoute>
-              <EventForm />
             </ProtectedRoute>
           }
         />
