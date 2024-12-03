@@ -28,7 +28,7 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:3001/api/login', { identifier, password })
+    axios.post('http://127.0.0.1:3001/api/auth/login', { identifier, password })
       .then(res => {
         setSuccess(true);
         setError(null);
