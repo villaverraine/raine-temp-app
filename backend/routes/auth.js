@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/Users.js';
 import Events from '../models/Events.js';
+import Guest from '../models/Guests.js';
 
 const router = express.Router();
 const saltRounds = 10;

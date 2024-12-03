@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
     Table,
     TableBody,
@@ -15,6 +17,7 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function EventTable({ eventData = [] }) {
+    const navigate = useNavigate();
     const [actionTable, setActionTable] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -27,6 +30,31 @@ export default function EventTable({ eventData = [] }) {
         setActionTable(false);
         setSelectedEvent(null);
     };
+
+    const handleViewReports = async (id) => {
+        const body = {
+            "_id": id
+        };
+
+        try {
+            const response = await axios.post('http://localhost:3001/api/search/Event', body);
+            console.log('Response: ', response.data);
+            const results = response.data.result;
+            if (results.length > 0) {
+                const participants = results[0].participants;
+                console.log('Participants: ', participants);
+                navigate("/reports", { state: { participants } });
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error('Error Response:', error.response.data);
+            } else if (error.request) {
+                console.error('No Response:', error.request);
+            } else {
+                console.error('Error:', error.message);
+            }
+        }
+    }
 
     const userActions = [
         {
@@ -47,6 +75,7 @@ export default function EventTable({ eventData = [] }) {
             label: 'View Reports',
             onClick: () => {
                 alert(`View Reports action for ${selectedEvent?.name}`);
+                handleViewReports(selectedEvent?._id);
                 handleCloseDialog();
             },
         },

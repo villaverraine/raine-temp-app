@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 import {
     Table,
     TableBody,
@@ -13,12 +15,45 @@ import {
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
-export default function ReportsTable({ reportData = [] }) {
+export default function ReportsTable() {
+    const location = useLocation();
+    const { participants = [] } = location.state || [];
     const [openRows, setOpenRows] = useState({});
+    const [reportData, setReportData] = useState([]);
 
     const toggleRow = (index) => {
         setOpenRows((prev) => ({ ...prev, [index]: !prev[index] }));
     };
+
+    const handleGetParticipants = async (ids) => {
+        try {
+            const body = {
+                "_id": {
+                    "$in": ids
+                }
+            };
+
+            const response = await axios.post('http://localhost:3001/api/search/Guest', body);
+            console.log('Guests Response: ', response.data);
+            const results = response.data.result;
+            if (results.length > 0) {
+                console.log("Participants: ", results);
+                setReportData(results);
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error('Error Response:', error.response.data);
+            } else if (error.request) {
+                console.error('No Response:', error.request);
+            } else {
+                console.error('Error:', error.message);
+            }
+        }
+    }
+
+    useEffect(() => {
+        handleGetParticipants(participants);
+    }, [participants]);
 
     return (
         <>
