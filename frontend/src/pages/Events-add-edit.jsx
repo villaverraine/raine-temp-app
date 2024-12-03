@@ -177,8 +177,6 @@ import {
       email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const [uploadedFiles, setUploadedFiles] = useState([]); // State to store uploaded files
-
     const handleFileUpload = (event) => {
     
     };
