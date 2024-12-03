@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,7 +18,11 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function EventTable({ eventData = [] }) {
+    const appContext = useContext(AppContext);
     const navigate = useNavigate();
+    const userId = appContext?.state?.profile?._id;
+    const token = appContext?.state?.token;
+
     const [actionTable, setActionTable] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -37,7 +42,16 @@ export default function EventTable({ eventData = [] }) {
         };
 
         try {
-            const response = await axios.post('http://localhost:3001/api/search/Event', body);
+            const response = await axios.post('http://localhost:3001/api/search/Event',
+                body,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: token,
+                    },
+                }
+            );
+
             console.log('Response: ', response.data);
             const results = response.data.result;
             if (results.length > 0) {
