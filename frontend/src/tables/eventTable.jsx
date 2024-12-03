@@ -70,11 +70,37 @@ export default function EventTable({ eventData = [] }) {
         }
     }
 
+    const handleEditEvent = async (eventName) => {
+        try {
+            const response = await axios.post('http://localhost:3001/api/search/Event', 
+                { name: eventName },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: token,
+                    },
+                }
+            );
+    
+            const results = response.data.result;
+            if (results.length > 0) {
+                const eventId = results[0]._id;
+                navigate(`/edit-event/${eventId}`);
+            } else {
+                alert("Event not found.");
+            }
+        } catch (error) {
+            console.error("Error fetching event ID:", error);
+            alert("An error occurred while fetching event details.");
+        }
+    };
+
     const userActions = [
         {
             label: 'Edit Event',
             onClick: () => {
                 alert(`Edit action for ${selectedEvent?.name}`);
+                handleEditEvent(selectedEvent?.name);
                 handleCloseDialog();
             },
         },

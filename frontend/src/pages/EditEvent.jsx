@@ -11,13 +11,24 @@ export default function EditEvent() {
   const appContext = useContext(AppContext);
   const token = appContext.state.token;
   const { eventId } = useParams();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    name: '',
+    date: '',
+    time: '',
+    venue: '',
+    category: '',
+    description: ''
+  });
   const navigate = useNavigate();
 
+
   useEffect(() => {
+    console.log(eventId)
     const fetchEventDetails = async () => {
       try {
-        const response = await axios.post('http://127.0.0.1:3001/api/search/Event/', { eventId },
+        const response = await axios.post(
+          'http://localhost:3001/api/search/Event',
+          { eventId }, 
           {
             headers: {
               'Content-Type': 'application/json',
@@ -25,7 +36,8 @@ export default function EditEvent() {
             },
           }
         );
-        setFormData(response);
+        console.log(response.data.result[0]);
+        setFormData(response.data.result[0]);
       } catch (error) {
         console.error("Error fetching event details:", error);
       }
@@ -35,7 +47,7 @@ export default function EditEvent() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.post(`http://127.0.0.1:3001/api/crud/update/Event/${eventId}/`, { formData },
+      const response = await axios.post(`http://127.0.0.1:3001/api/crud/update/Event/${eventId}/`, formData,
         {
           headers: {
             'Content-Type': 'application/json',

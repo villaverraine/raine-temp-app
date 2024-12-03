@@ -71,7 +71,7 @@ export default function App() {
           }
         />
         <Route
-          path="/edit-event"
+          path="/edit-event/:eventId"
           element={
             <ProtectedRoute>
               <EditEvent />

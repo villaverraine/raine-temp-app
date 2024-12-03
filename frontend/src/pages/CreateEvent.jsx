@@ -9,9 +9,9 @@ export default function CreateEvent() {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
-  const handleSubmit = async () => { // not working this is AI generated
+  const handleSubmit = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/api/events", {
+      const response = await fetch("http://127.0.0.1:3001/api/crud/create/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
